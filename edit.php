@@ -1,16 +1,16 @@
 <?php
 include('config/db_connect.php');
 
-// If an ID is provided in the URL, fetch the employee's current data for editing
+
 if (isset($_GET['id'])) {
     $id = mysqli_real_escape_string($conn, $_GET['id']);
 
-    // Get current employee data for editing
+
     $sql = "SELECT * FROM employee WHERE id = $id";
     $result = mysqli_query($conn, $sql);
     $employee = mysqli_fetch_assoc($result);
 
-    // Set the values for the form fields
+
     $firstname = $employee['firstname'];
     $lastname = $employee['lastname'];
     $email = $employee['email'];
@@ -21,7 +21,7 @@ if (isset($_GET['id'])) {
     mysqli_free_result($result);
     mysqli_close($conn);
 } else {
-    // If no ID is provided, initialize empty variables for adding a new employee
+
     $firstname = '';
     $lastname = '';
     $email = '';
@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
     $position = '';
 }
 
-// Process the form for adding or updating an employee
+
 if (isset($_POST['submit'])) {
     include('config/db_connect.php');
 
@@ -42,16 +42,16 @@ if (isset($_POST['submit'])) {
     $position = mysqli_real_escape_string($conn, $_POST['position']);
 
     if (isset($_POST['id'])) {
-        // Update existing employee
+
         $id = mysqli_real_escape_string($conn, $_POST['id']);
         $sql = "UPDATE employee SET firstname='$firstname', lastname='$lastname', email='$email', number='$number', homeadd='$homeadd', position='$position' WHERE id=$id";
     } else {
-        // Add new employee
+
         $sql = "INSERT INTO employee (firstname, lastname, email, number, homeadd, position) VALUES ('$firstname', '$lastname', '$email', '$number', '$homeadd', '$position')";
     }
 
     if (mysqli_query($conn, $sql)) {
-        header('Location: modify.php'); // Redirect to employee list after success
+        header('Location: modify.php');
     } else {
         echo 'Error: ' . mysqli_error($conn);
     }
@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
     <h4 class="center title-text"><?php echo isset($_GET['id']) ? 'Edit Employee' : 'Add New Employee'; ?></h4>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" class="white">
         <?php if (isset($_GET['id'])): ?>
-            <!-- Hidden input to pass the employee ID when editing -->
+          
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
         <?php endif; ?>
 
